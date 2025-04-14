@@ -34,6 +34,7 @@ const ModifyPage = async (props: {
       <>
         <ModifyForm
           id={postDetail?._id.toString()}
+          ownerId={postDetail.ownerId}
           title={postDetail?.title}
           content={postDetail?.content}
         />

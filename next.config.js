@@ -8,5 +8,6 @@ module.exports = {
     GITHUB_APP_SECRET: process.env.GITHUB_APP_SECRET,
     GOOGLE_APP_ID: process.env.GOOGLE_APP_ID,
     GOOGLE_APP_SECRET: process.env.GOOGLE_APP_SECRET,
+    MONGO_DB_URL: process.env.MONGO_DB_URL,
   },
 };
