@@ -112,9 +112,8 @@ yarn dev
 
 - **RESTFUL API**
 
-  - 인생 첫 서버 개발이라 미숙한점 양해 바랍니다.
-  - 최대한 REST 형식에 맞게 { GET, POST, PUT, DELETE } 사용
-  - 각종 NULL 및 정규식 검사 (프론트측도 동일 검사 하여 Submit)
+  - REST 형식에 맞게 { GET, POST, PUT, DELETE } 사용
+  - 각종 NULL 및 정규식 검사 (프론트와 크로스 검증 후 Submit)
   - API 요청 시 header의 Acess Token 확인하여 API 실행
     - backend 기술 부재로 Access Token이 왔는지 까지만 확인합니다 ㅠㅠ
 
