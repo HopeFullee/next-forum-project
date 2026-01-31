@@ -1,4 +1,4 @@
-## Next.js 13 SSR + CSR 연습용 게시판
+## Next.js 13 SSR + CSR 풀스택 게시판
 
 ### 실행법
 
