@@ -1,162 +1,94 @@
-## Next.js 13 SSR + CSR 풀스택 게시판
+🚀 Next.js 13 Full-Stack Forum Project
+Next.js 13(Pages Router)과 MongoDB를 활용한 SSR + CSR 통합 게시판 서비스
 
-### 실행법
+🛠 Tech Stack
+Framework: Next.js 13.4.13
 
-```
+Database: MongoDB 5.7.0
+
+Auth: Next-Auth 4.23.1 (Credentials & OAuth)
+
+Language & Tool: TypeScript, Node.js 20.5.0, Axios, TailwindCSS, bcrypt, clsx
+
+📌 전체 기능 요약
+인가/인증: 회원가입/로그인, Access·Refresh Token 발급, 세션 기반 유저 관리 및 페이지 라우팅 제어
+
+회원관리: 유저 고유 ID 기반 프로필 정보 수정 (닉네임 등)
+
+게시판: 게시글 및 댓글의 CRUD(생성, 조회, 수정, 삭제) 기능 실무 구현
+
+💻 Frontend 상세 구현
+1. 고도화된 폼 제어 (Controlled Form)
+실시간 유효성 검사: State 관리를 통해 정규식 기반 에러 메시지를 실시간으로 노출합니다.
+
+비정상 요청 차단: 유효성 검사 미통과 시 Submit을 제한하여 불필요한 API 통신을 방지합니다.
+
+스팸 클릭 방지: API 통신 중 버튼을 비활성화하고, 통신 결과(status)에 따라 재활성 로직을 적용했습니다.
+
+2. 인증 및 보안 라우팅
+접근 권한 제어: 세션 유무를 확인하여 비회원이 회원 전용 URL 접근 시 로그인 페이지로 리다이렉트합니다.
+
+Next-Auth 활용:
+
+커스텀 로그인 폼 정보를 signIn 함수를 통해 백엔드와 통신합니다.
+
+인증이 필요한 API 요청 시 헤더에 accessToken을 포함하여 보안을 강화했습니다.
+
+실시간 세션 업데이트: 닉네임 변경 등 프로필 정보 수정 시, 수동 세션 업데이트(update)를 통해 UI에 즉시 반영합니다.
+
+3. 게시판 및 유저 인터랙션
+Dynamic Routing & SSR:
+
+게시글 고유 ID를 파라미터로 활용하며, SSR을 통해 SEO 최적화 및 게시글 공유 시 메타데이터 노출이 가능합니다.
+
+소유권 기반 UI 렌더링:
+
+게시글/댓글 작성자와 현재 로그인 유저의 ID를 대조하여 본인의 글에만 수정/삭제 버튼을 노출합니다.
+
+URL 변조를 통한 타인 글 수정 접근 시 목록 페이지로 강제 이동시키는 방어 로직을 구축했습니다.
+
+⚙️ Backend 상세 구현
+1. 인증 시스템 (Next-Auth API)
+Credentials Provider:
+
+회원가입 시 bcrypt를 활용해 비밀번호를 암호화하여 저장합니다.
+
+oAuth Integration:
+
+소셜 로그인 정보를 자체 DB에 매핑하여 저장함으로써, 소셜 로그인 유저도 프로필 수정이 가능하도록 설계했습니다.
+
+Token Management:
+
+oAuth 기반 Token/Refresh Token 발급 및 만료 시 재발급 요청 로직을 구현했습니다.
+
+2. RESTful API 설계
+규격 준수: 리소스 성격에 맞는 HTTP Method(GET, POST, PUT, DELETE)를 사용합니다.
+
+데이터 정합성: 프론트엔드와 백엔드에서 정규식 및 NULL 검사를 수행하는 크로스 검증 시스템을 갖췄습니다.
+
+3. 데이터 관계 설계 및 가공
+Relationship Mapping:
+
+게시글 조회 시 작성자 ID를 기반으로 DB 유저 정보를 Join하여 최신 닉네임을 반환합니다.
+
+이를 통해 유저가 닉네임을 변경해도 과거 작성글의 닉네임이 실시간으로 반영됩니다.
+
+CRUD 로직 최적화:
+
+PUT/DELETE: 세션 ID와 리소스 소유자 ID를 검증한 후 작업을 수행합니다.
+
+댓글 시스템: 게시글 도큐먼트 내 배열 형태로 댓글을 저장하며, 고유 Object ID를 부여하여 개별 댓글 제어가 가능합니다.
+
+📅 To-Do List (향후 고도화 계획)
+[ ] 게시글 조회수 카운팅 기능 추가
+
+[ ] 커서 기반 또는 오프셋 기반 Pagination 구현
+
+[ ] 키워드 검색 기능 (Search 엔진 고도화)
+
+🚀 실행 방법
+Bash
 npm run dev
-or
+# or
 yarn dev
-```
-
-## Framework, Database, Librarys
-
-- **Framework**
-
-  - Next.js 13.4.13
-
-- **Database**
-
-  - MongoDB 5.7.0
-
-- **Library**
-  - Typescript 5.1.6
-  - Axios 1.5.0
-  - Next-Auth 4.23.1
-  - Node.js 20.5.0
-  - bcrypt 5.1.1
-  - Tailwindcss 3.3.3
-  - clsx 2.0.0
-
-## 전체 기능 Summary
-
-- **인가/인증**
-
-  - 회원가입, 로그인
-  - Acess Token, Refresh Token 발급
-  - session 관리
-  - 인증/인가 여부에 따라 API 통신 및 특정 페이지 라우팅
-
-- **회원정보 수정**
-
-  - 회원의 unique key "id"를 제외한 정보만 변경
-
-- **게시판 기능**
-
-  - 게시글 작성, 수정, 삭제
-  - 댓글 작성, 수정, 삭제
-
-## Frontend 기능 상세 설명
-
-- **제어 컴포넌트 Controlled Form**
-
-  - state 관리로 실시간 정규식 경고 표시/해지.
-  - 정규식 경고가 있을 시 Submit 차단 (불필요한 API 통신 차단)
-  - submit 스팸 클릭 방지를 위해 api 통신 시 submit 버튼 비활성
-    - 통신 에러로 res.status !== 200 이면 재전송을 위해 submit 버튼 재활성
-
-- **인증/인가**
-
-  - 로그인 된 회원만 특정 UI 및 페이지 랜더
-    - 비회원 유저가 회원 전용 URL 진입 시 로그인 페이지로 리다이렉트함
-  - credentials 회원가입 및 로그인
-    - 회원가입 <span style="color:#ADD8E6">{ email, nickName, password, rePassword }</span> Form 항목에 중복 및 형식 (정규식) 검사하고
-      자체 DB에 저장하여 회원가입
-    - 커스텀 로그인 페이지의 로그인 Form에 기입한 정보를 next-auth 에서 지원하는 signIn 함수에 전달하여
-      next-auth API에 보냄
-      - backend 정규식 검사 포함하여 frontend로 에러 반환하여 유저에게 알림 <span style="color: coral">(\*이메일 또는 비밀번호가 틀렸습니다.)</span>
-  - next-auth backend에서 생성된 session <span style="color:#ADD8E6">{ id, token, nickname ...etc }</span>으로 사이트내 각종 UI 랜더,
-    페이지 라우팅, API 통신에 사용됨
-  - 인증/인가 필요한 API 를 위해 헤더에 accessToken 기입
-
-- **회원정보 수정**
-
-  - 닉네임 변경 시 next-auth의 session 정보를 update 해줌
-    - 최초 로그인 시에만 session이 새로 생성됨으로 session에서 사용하던 user profile 정보가 변경 시 수동적으로 session을
-      <span style="color: coral">update</span> 해줘야함.
-
-- **게시판 기능**
-
-  - next.js dynamic routing
-    - 게시글의 unique key "id"로 URL 파라미터에 적용 (게시글 수정 페이지도 동일)
-    - 적용된 id 파라미터로 게시글 상세 내용 API로 불러옴
-    - SSR 이점으로 서치 엔진 적용 및 URL로 게시글 공유시 유용함
-  - 본인이 작성한 게시글, 댓글만 수정, 삭제 UI 랜더
-    - 작성자의 id를 게시글 및 댓글의 ownerId 프로퍼티에 저장
-    - session을 통해 현제 로그인된 회원의 id와 게시글, 댓글의 ownerId 대조
-    - 게시글 수정 페이지의 랜더 여부 또한 위 설명과 동일.
-      - URL 변조로 타회원의 작성글로 수정 페이지 접근 시 목록 페이지로 리다이렉트 시킴.
-
-## Backend 기능 상세 설명
-
-- **인가/인증**
-
-  - next-auth 라이브러리 환경에서 작성 <span style="color:#ADD8E6">src/pages/api/auth</span>
-  - credentials 회원가입 및 로그인
-    - credentials 회원가입 페이지에 기입한 Form 정보로 DB에 저장하여 회원가입
-      - 비밀번호는 bcrypt 암호화 하여 DB에 저장
-    - 커스텀 로그인 페이지에 기입한 로그인 Form 정보를 next-auth 에서 지원하는 signIn 함수에 전달 하여 로그인
-      <span style="color:#ADD8E6">Credentials Provider</span>
-  - oAuth 회원가입 및 로그인
-    - 최초 oAuth 로그인 시 provider가 반환하는 유저정보내 <span style="color:#ADD8E6">{ email, name, id }</span>
-      를 자체 DB에 저장하여 회원가입.
-      - 자체 DB에 회원 정보를 등록해야 추후 유저 profile 정보를 변경 가능 (ex. 닉네임 etc...)
-    - oAuth 로그인 시 provider가 반환한 { id } 와 동일한 id 가 회원목록 DB에 존제하는지 검사
-      - 이미 등록된 회원이라면 -> 로그인
-      - 등록되지 않은 회원이라면 상단 최초 oAuth 로그인 로직으로 -> 회원가입
-  - Access Token 및 Refresh Token
-    - oAuth 로그인 시 provider의 token, refresh token 발급
-      - token 만료 시 provider의 end point에 token 재발급 요청
-    - credentials 로그인은 토큰관련 backend 기술 부재로 기능 테스트용도를 위해 <span style="color: coral">DUMMY TOKEN</span> 발급
-  - session 관리
-    - 로그인한 회원정보 <span style="color:#ADD8E6">{ id, token, nickname ...etc }</span>를 next-auth 에서 제공하는 session (cookie)에 담아 생성
-
-- **RESTFUL API**
-
-  - REST 형식에 맞게 { GET, POST, PUT, DELETE } 사용
-  - 각종 NULL 및 정규식 검사 (프론트와 크로스 검증 후 Submit)
-  - API 요청 시 header의 Acess Token 확인하여 API 실행
-    - backend 기술 부재로 Access Token이 왔는지 까지만 확인합니다 ㅠㅠ
-
-- **회원정보 수정**
-
-  - 닉네임 변경 요청 시 정규식, 중복 검사를 진행합니다.
-    - 중복 에러는 프론트로 전달하여 프론트 측에서 UI 경고 표시
-
-- **게시판 기능**
-
-  - 게시글 목록 GET
-    - DB에 저장된 모든 게시글을 받아옵니다
-    - 불러온 게시글에 저장된 { 작성자 ID } 와 동일한 회원의 정보를 DB에서 받아온후
-      { author: DB회원정보.닉네임 } 의 프로퍼티를 추가하여 프론트로 보내줍니다
-      - 닉네임 변경 시 이전에 작성했던 게시글의 작성자 닉네임 또한 변경된 닉네임으로 표시하기 위함
-  - 게시글 상세 정보 GET
-    - URL query 파라미터로 전달 받은 게시글의 ID로 DB에 서 상세적보를 추적하여 프론트로 전달합니다
-      - 추적한 게시글의 { 작성자 ID }, { 댓글 작성자 ID } 정보를 활용해 별도로 DB에서 회원의 정보를 가져온후
-        상세글 정보에 포함하여 프론트로 전달
-      - 닉네임 변경 시 이전에 작성했던 게시글, 댓글의 작성자 닉네임 또한 변경된 닉네임으로 표시하기 위함
-  - 게시글 생성 POST
-    - { 작성자 ID, 제목, 내용, 작성일, 댓글:{빈 배열} } 를 DB에 저장합니다
-    - MongoDB 에 저장된 게시글엔 Object Id 의 unique key가 자동으로 생성됩니다
-  - 게시글 수정 PUT
-    - 수정을 요청한 게시글의 { 작성자 ID } 와 요청자의 { session.user.id } 와 동일한지 비교합니다
-    - 수정할 게시글을 Object Id 로 추적하여 { 제목, 내용 }등을 update 합니다
-  - 게시글 삭제 DELETE
-    - 삭제를 요청한 게시글의 { 작성자 ID } 와 요청자의 { session.user.id } 와 동일한지 비교합니다
-      - DELETE 메소드의 특성상 req.body 를 권장하지 않음으로 URL에 노출되어도 지장이 없는 { 게시글 ID }만 query로 받아오고
-      - 게시글의 { 작성자 ID } 정보는 별도로 DB에서 { 게시글 ID }로 추적하여 받아온 후 상단 설명대로 수행합니다
-  - 댓글 작성 POST
-    - { 작성자 ID, 내용, 작성일 } 을 귀속 되어있는 본문 게시글의 { 댓글: { 빌배열 } } 에 추가합니다
-      - 추후 댓글 수정, 삭제를 위해 고의로 새로운 Object Id (unique key)를 추가해줍니다
-  - 댓글 수정 PUT
-    - 수정을 요청한 댓글의 { 작성자 ID } 와 요청자의 { session.user.id } 와 동일한지 비교합니다
-    - 수정할 댓글을 Object Id 로 추적하여 { 내용 }을 update 합니다
-  - 댓글 삭제 DELETE
-    - 삭제를 요청한 댓글의 { 작성자 ID } 와 요청자의 { session.user.id } 와 동일한지 비교합니다
-      - DELETE 메소드의 특성상 req.body 를 권장하지 않음으로 URL에 노출되어도 지장이 없는 { 댓글 ID, 게시글 ID }만 query로 받아오고
-      - 댓글의 { 작성자 ID } 정보는 별도로 DB에서 { 게시글 ID 와 댓글 작성자 ID }로 추적하여 받아온 후 상단 설명대로 수행합니다
-
-## To Do List
-
-- 게시글 조회수 기능
-- 게시판 pagination 기능 (backend 가 많이 어려워 보임..)
-- 게시판 게시글 검색 기능
+이 프로젝트는 프론트엔드 역량을 넘어, 데이터의 흐름과 보안 메커니즘을 깊이 이해하고 설계한 풀스택 기반의 결과물입니다.
