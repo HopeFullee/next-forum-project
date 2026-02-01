@@ -20,7 +20,7 @@ yarn dev
 
 - **Language & Tool**: TypeScript, Node.js 20.5.0, Axios, TailwindCSS, bcrypt, clsx
 
----
+***
 
 ## 📌 전체 기능 요약
 - **인가/인증**: 회원가입/로그인, Access·Refresh Token 발급, 세션 기반 유저 관리 및 페이지 라우팅 제어
