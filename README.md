@@ -1,7 +1,17 @@
-## 🚀 Next.js 13 Full-Stack Forum Project
-#### Next.js + MongoDB를 활용한 SSR + CSR 통합 게시판 서비스
+# 🚀 Next.js 13 Full-Stack Forum Project
+## Next.js + MongoDB를 활용한 SSR + CSR 통합 게시판 서비스
 
-### 🛠 Tech Stack
+### 이 프로젝트는 웹 퍼블리셔의 역량을 넘어, 데이터의 흐름과 보안 메커니즘을 이해하기 위해 제작이 되었습니다.
+
+## 🚀 실행 방법
+```Bash
+Bash
+npm run dev
+# or
+yarn dev
+```
+
+## 🛠 Tech Stack
 - **Framework**: Next.js 13.4.13
 
 - **Database**: MongoDB 5.7.0
@@ -12,7 +22,7 @@
 
 ---
 
-### 📌 전체 기능 요약
+## 📌 전체 기능 요약
 - **인가/인증**: 회원가입/로그인, Access·Refresh Token 발급, 세션 기반 유저 관리 및 페이지 라우팅 제어
 
 - **회원관리**: 유저 고유 ID 기반 프로필 정보 수정 (닉네임 등)
@@ -21,7 +31,7 @@
 
 ---
 
-### 💻 Frontend 상세 구현
+## 💻 Frontend 상세 구현
 **1. 고도화된 폼 제어 (Controlled Form)**
 - **실시간 유효성 검사**: State 관리를 통해 정규식 기반 에러 메시지를 실시간으로 노출합니다.
 
@@ -53,7 +63,7 @@
 
  ---
 
-⚙️ Backend 상세 구현
+## ⚙️ Backend 상세 구현
 **1. 인증 시스템 (Next-Auth API)**
 
 - **Credentials Provider**: 회원가입 시 bcrypt를 활용해 비밀번호를 암호화하여 저장합니다.
@@ -82,7 +92,7 @@
 
   - **댓글 시스템**: 게시글 도큐먼트 내 배열 형태로 댓글을 저장하며, 고유 Object ID를 부여하여 개별 댓글 제어가 가능합니다.
 
-### 📅 To-Do List (향후 고도화 계획)
+## 📅 To-Do List (향후 고도화 계획)
 
 - [ ] 게시글 조회수 카운팅 기능 추가
 
@@ -90,12 +100,4 @@
 
 - [ ] 키워드 검색 기능 (Search 엔진 고도화)
 
-🚀 실행 방법
-```Bash
-Bash
-npm run dev
-# or
-yarn dev
-```
 
-이 프로젝트는 프론트엔드 역량을 넘어, 데이터의 흐름과 보안 메커니즘을 깊이 이해하고 설계한 풀스택 기반의 결과물입니다.
